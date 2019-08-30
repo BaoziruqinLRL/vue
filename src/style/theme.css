@@ -41,17 +41,17 @@ body {
   margin-top: 5%;
   margin-left: 35%;
   margin-right: 35%;
-  border-style: wave;
 }
 .qxs-ic_user {
   background: url("../assets/login/ic_user.jpeg") no-repeat;
-  background-size: 25px 25px;
-  background-position: 0%;
+  background-size: 10%;
+  background-position: 0;
+
 }
 .qxs-ic_password {
   background: url("../assets/login/ic_password.jpeg") no-repeat;
-  background-size: 25px 25px;
-  background-position: 0%;
+  background-size: 10%;
+  background-position: 0;
   margin-bottom: 20px;
 }
 .login_logo {
