@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '../components/login/Login.vue'
-import Home from '../components/home/Home.vue'
+
+// 主页
+const Home = () => import('@/components/pages/Home')
+// 登录页面
+const Login = () => import('@/components/pages/Login')
 
 Vue.use(Router)
-
-const router = new Router({
+let RouterObj = new Router({
   mode: 'history',
   routes: [
     {
@@ -22,23 +24,10 @@ const router = new Router({
       }
     }
   ]
-});
+})
 
-export default router;
+RouterObj.beforeEach((to, from, next) => {
+  next()
+})
 
-router.beforeEach((to,from,next) => {
-  if (to.meta.requireAuth){
-    if (sessionStorage.getItem("login success") != null){
-      next();
-    }else {
-      next({
-        name: 'Login',
-        query: {
-          redirect: to.fullPath
-        }
-      })
-    }
-  }else{
-    next();
-  }
-});
+export default RouterObj

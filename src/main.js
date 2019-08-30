@@ -15,9 +15,18 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   el: '#app',
   router,
   components: { App },
   template: '<App/>'
-});
+})
+let _export = {}
+app.$router.forcePush = function() {
+  app.$router.push(...arguments)
+  app.$router.go(0)
+}
+
+_export.app = app
+
+export default _export
