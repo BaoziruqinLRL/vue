@@ -15,20 +15,18 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   el: '#app',
   router,
   components: { App },
   template: '<App/>'
-});
+})
+let _export = {}
+app.$router.forcePush = function() {
+  app.$router.push(...arguments)
+  app.$router.go(0)
+}
 
-router.beforeEach((to,from,next) => {
-  if (to.meta.requireAuth){
-    next({
-      path: '/',
-      query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-    })
-  }else{
-    next();
-  }
-});
+_export.app = app
+
+export default _export

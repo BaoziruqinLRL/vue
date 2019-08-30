@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '../components/login/Login.vue'
-import Home from '../components/home/Home.vue'
+
+// 主页
+const Home = () => import('@/components/pages/Home')
+// 登录页面
+const Login = () => import('@/components/pages/Login')
 
 Vue.use(Router)
-
-export default new Router({
+let RouterObj = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -22,3 +25,9 @@ export default new Router({
     }
   ]
 })
+
+RouterObj.beforeEach((to, from, next) => {
+  next()
+})
+
+export default RouterObj
