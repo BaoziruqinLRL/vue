@@ -49,8 +49,9 @@
           this.$message.error('请输入密码');
           return;
         }
+        sessionStorage.setItem("login success","true");
         this.$router.push({
-          path: '/home'
+          name: 'HomePage'
         });
       }
     }

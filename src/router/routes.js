@@ -5,7 +5,8 @@ import Home from '../components/home/Home.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -21,4 +22,23 @@ export default new Router({
       }
     }
   ]
-})
+});
+
+export default router;
+
+router.beforeEach((to,from,next) => {
+  if (to.meta.requireAuth){
+    if (sessionStorage.getItem("login success") != null){
+      next();
+    }else {
+      next({
+        name: 'Login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+  }else{
+    next();
+  }
+});
