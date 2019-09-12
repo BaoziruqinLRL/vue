@@ -3,5 +3,9 @@
     ["env", { "modules": false }],
     "stage-3"
   ],
-  "plugins": ["syntax-dynamic-import"]
+  "plugins": [
+    "syntax-dynamic-import",
+    "transform-es2015-modules-commonjs",
+    "transform-runtime"
+  ]
 }
