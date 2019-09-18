@@ -1,32 +1,55 @@
 <template>
-  <div class="home_circle">
-    <el-form :model="logisticsList" ref="logisticsList">
-      <el-button @click="submitForm('logisticsList')">登录</el-button>
-    </el-form>
-    <el-table :data="orders">
-      <el-table-column prop="id"></el-table-column>
-    </el-table>
-  </div>
+  <div_middle>
+    <div v-for="(item) in data" @click="menus">
+      <div class="home_circle">
+        <span @click="toMemberHome(item.id)">{{item.name}}</span>
+      </div>
+    </div>
+  </div_middle>
 </template>
 
 <script>
+  import {getMembers} from "../../api/getData";
+  import Maze from 'vue-maze';
 
-  import {logisticsList} from "@/api/getData"
   export default {
+    components: {
+      'mazeel': Maze
+    },
     data() {
       return {
-        logisticsList: []
+        data: [],
+        memberSize: 1
       };
     },
+    mounted(){
+      this.init();
+      this.submitForm();
+    },
     methods: {
-      async submitForm(formName){
-        this.$refs[formName].validate(async (valid) => {
-          if (valid){
-            const res = await logisticsList({});
-            if (res.logisticsList.length === 0){
-              console.log("AAA");
-            }
-          }
+      init(){
+        // 初始化数据,清除多余参数
+        localStorage.removeItem("memberId");
+      },
+      async submitForm(){
+        const res = await getMembers({userId: localStorage.getItem("userId")});
+        this.data = [];
+        this.memberSize = 1;
+        if (res === undefined || res === null){
+          this.$message({
+            message: "res is null"
+          });
+        }else{
+          res.data.forEach(item => {
+            this.data.push(item);
+            this.memberSize += 1;
+          })
+        }
+      },
+      toMemberHome(memberId){
+        localStorage.setItem("memberId",memberId);
+        this.$router.push({
+          name: 'memberNavigation'
         })
       }
     }
@@ -34,12 +57,23 @@
 
 </script>
 
-<style>
-  .home_circle {
-    padding-left: 5%;
-    padding-right: 5%;
-    margin-top: 5%;
-    margin-left: 35%;
-    margin-right: 35%;
+<style scoped>
+  .home_circle{
+    text-align: center;
+    line-height: 200px;
+    width: 200px;
+    height: 200px;
+    float: left;
+    background: url("../../assets/home/circle.jpeg") no-repeat center;
+  }
+  div_middle {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    bottom: 5%;
+    right: 5%;
+    width: 90%;
+    height: 90%;
+    border: none;
   }
 </style>

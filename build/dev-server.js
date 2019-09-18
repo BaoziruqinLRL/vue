@@ -45,7 +45,7 @@ var context = config.dev.context;
 
 switch(process.env.NODE_ENV){
     case 'local': var proxypath = 'http://localhost:8660'; break;
-    case 'dev': var proxypath = 'http://localhost:8085/shoubaodanmgr'; break;
+    case 'dev': var proxypath = 'http://localhost:8421/'; break;
 }
 var options = {
     target: proxypath,

@@ -24,7 +24,6 @@
 
 <script>
   import {login} from '@/api/getData'
-  import {mapActions, mapState} from 'vuex'
 
   export default {
     data(){
@@ -38,29 +37,26 @@
     },
     mounted(){
       this.showLogin = true;
-      if (!this.adminInfo.id) {
-        this.getAdminData()
-      }
-    },
-    computed: {
-      ...mapState(['adminInfo']),
+      this.autoLogin();
     },
     methods: {
-      ...mapActions(['getAdminData']),
       async submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const res = await login({user_name: this.loginForm.username, password: this.loginForm.password})
-            if (res.status == 1) {
+            const userData = {loginName: this.loginForm.username, loginPwd: this.loginForm.password};
+            const res = await login(userData);
+            if (res.code === 200) {
               this.$message({
                 type: 'success',
                 message: '登录成功'
               });
+              localStorage.setItem("username",userData.loginName);
+              localStorage.setItem("userId",res.data.id);
               this.$router.push('home')
             }else{
               this.$message({
                 type: 'error',
-                message: res.message
+                message: res.result
               });
             }
           } else {
@@ -73,15 +69,13 @@
           }
         });
       },
-    },
-    watch: {
-      adminInfo: function (newValue){
-        if (newValue.id) {
+      async autoLogin(){
+        if (localStorage.getItem("username")) {
           this.$message({
             type: 'success',
             message: '检测到您之前登录过，将自动登录'
           });
-          this.$router.push('manage')
+          this.$router.push('home')
         }
       }
     }
