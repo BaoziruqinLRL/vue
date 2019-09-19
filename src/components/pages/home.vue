@@ -1,11 +1,11 @@
 <template>
-  <div_middle>
-    <div v-for="(item) in data" @click="menus">
+  <div class="div_middle">
+    <div v-for="(item) in data">
       <div class="home_circle">
         <span @click="toMemberHome(item.id)">{{item.name}}</span>
       </div>
     </div>
-  </div_middle>
+  </div>
 </template>
 
 <script>
@@ -66,7 +66,7 @@
     float: left;
     background: url("../../assets/home/circle.jpeg") no-repeat center;
   }
-  div_middle {
+  .div_middle {
     position: absolute;
     top: 5%;
     left: 5%;

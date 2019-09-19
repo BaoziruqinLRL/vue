@@ -24,7 +24,7 @@ const actions = {
 			    userName: "user"
         }
       }
-			if (res.status == 1) {
+			if (res.status === 1) {
 				console.log("");
 			}else{
 				throw new Error(res.type)

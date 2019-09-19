@@ -13,14 +13,6 @@
   export default {
     data(){
       return {
-        userCount: null,
-        orderCount: null,
-        adminCount: null,
-        allUserCount: null,
-        allOrderCount: null,
-        allAdminCount: null,
-        sevenDay: [],
-        sevenDate: [[],[],[]],
       }
     },
     components: {

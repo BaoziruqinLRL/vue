@@ -19,7 +19,8 @@ const Routers = new Router({
       component: login,
       meta: {
         requireAuth: false,
-        requireMember: false
+        requireMember: false,
+        pageName: "登录页"
       }
     },
     {
@@ -28,7 +29,8 @@ const Routers = new Router({
       component: home,
       meta: {
         requireAuth: true,
-        requireMember: false
+        requireMember: false,
+        pageName: "主页"
       }
     },
     {
@@ -37,7 +39,8 @@ const Routers = new Router({
       component: memberNavigation,
       meta: {
         requireAuth: true,
-        requireMember: true
+        requireMember: true,
+        pageName: "首页导航栏"
       },
       children: [
         {
@@ -46,7 +49,8 @@ const Routers = new Router({
           component: memberBase,
           meta: {
             requireAuth: true,
-            requireMember: true
+            requireMember: true,
+            pageName: "首页"
           }
         },
         {
@@ -55,7 +59,8 @@ const Routers = new Router({
           component: memberBase,
           meta: {
             requireAuth: true,
-            requireMember: true
+            requireMember: true,
+            pageName: "0页"
           }
         },
         {
@@ -64,7 +69,8 @@ const Routers = new Router({
           component: memberBase,
           meta: {
             requireAuth: true,
-            requireMember: true
+            requireMember: true,
+            pageName: "1-1页"
           }
         },
         {
@@ -73,7 +79,8 @@ const Routers = new Router({
           component: memberBase,
           meta: {
             requireAuth: true,
-            requireMember: true
+            requireMember: true,
+            pageName: "1-2页"
           }
         },
         {
@@ -82,7 +89,38 @@ const Routers = new Router({
           component: memberBase,
           meta: {
             requireAuth: true,
-            requireMember: true
+            requireMember: true,
+            pageName: "1-3页"
+          }
+        },
+        {
+          path: '/two-one',
+          name: 'twoOne',
+          component: memberBase,
+          meta: {
+            requireAuth: true,
+            requireMember: true,
+            pageName: "2-1页"
+          }
+        },
+        {
+          path: '/two-two',
+          name: 'twoTwo',
+          component: memberBase,
+          meta: {
+            requireAuth: true,
+            requireMember: true,
+            pageName: "2-2页"
+          }
+        },
+        {
+          path: '/member-info',
+          name: 'memberInfo',
+          component: memberBase,
+          meta: {
+            requireAuth: true,
+            requireMember: true,
+            pageName: "个人中心"
           }
         }
       ]
