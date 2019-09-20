@@ -10,11 +10,9 @@
 
 <script>
   import {getMembers} from "../../api/getData";
-  import Maze from 'vue-maze';
 
   export default {
     components: {
-      'mazeel': Maze
     },
     data() {
       return {

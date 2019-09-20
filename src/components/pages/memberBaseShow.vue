@@ -1,14 +1,18 @@
 <template>
   <div>
     <head-top></head-top>
-    <section class="data_section">
-      <header class="section_title"></header>
-    </section>
+    <div class="maze-title">
+      先来玩个迷宫叭
+    </div>
+    <div class="maze-self">
+      <maze></maze>
+    </div>
   </div>
 </template>
 
 <script>
   import headTop from '../../components/pages/headTop';
+  import Maze from 'vue-maze';
 
   export default {
     data(){
@@ -17,6 +21,7 @@
     },
     components: {
       headTop,
+      Maze
     },
     mounted(){
     },
@@ -29,43 +34,22 @@
   }
 </script>
 
-<style lang="less">
-  @import '../../style/mixin';
-  .data_section{
-    padding: 20px;
-    margin-bottom: 40px;
-    .section_title{
-      text-align: center;
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-    .data_list{
-      text-align: center;
-      font-size: 14px;
-      color: #666;
-      border-radius: 6px;
-      background: #E5E9F2;
-      .data_num{
-        color: #333;
-        font-size: 26px;
-
-      }
-      .head{
-        border-radius: 6px;
-        font-size: 22px;
-        padding: 4px 0;
-        color: #fff;
-        display: inline-block;
-      }
-    }
-    .today_head{
-      background: #FF9800;
-    }
-    .all_head{
-      background: #20A0FF;
-    }
+<style scoped>
+  .maze-title{
+    position: fixed;
+    top: 11%;
+    left: 54.3333%;
+    text-align: center;
   }
-  .wan{
-  .sc(16px, #333)
+  .maze-self {
+    position: fixed;
+    top: 15%;
+    left: 21.6667%;
+    bottom: 5%;
+    right: 5%;
+    border: none;
+  }
+  .maze-self >>> .maze{
+    min-height: 100%;
   }
 </style>

@@ -30,7 +30,7 @@
           </template>
           <!-- 构建个人中心按钮 -->
           <el-menu-item class="el-menu-item-width" index="/member-info">
-            <i class="el-icon-setting"></i>
+            <i class="el-icon-edit"></i>
             <span>个人中心</span>
           </el-menu-item>
           <!-- 构建切换成员按钮 -->
