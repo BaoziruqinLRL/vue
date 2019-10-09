@@ -1,7 +1,7 @@
-<template>
+<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div class="manage_page fillcontain">
     <el-row style="height: 100%;">
-      <el-col :span="4" class="navigation-style">
+      <el-col :span="4" class="navigation-style" style="position: fixed">
         <el-menu class="navigation-style" router>
           <!-- 构建首页按钮 -->
           <el-menu-item class="home_style" index="/member-navigation"><i class="el-icon-menu"></i>
@@ -12,8 +12,10 @@
             <template v-if="menu.childMenus">
               <el-submenu class="el-submenu-navigation" :index="menu.menu.name">
                 <template slot="title">
-                  <i class="el-icon-message"></i>
+                  <i :class="{'el-icon-unlock': menu.open, 'el-icon-lock': !menu.open}"></i>
                   <span class="text-color">{{menu.menu.name}}</span>
+                  <div class="click-unlock" @click="changeSubMenuIcon(menu)">
+                  </div>
                 </template>
                 <template v-for="(child) in menu.childMenus">
                   <el-menu-item class="el-menu-item-width" :index="child.code">
@@ -32,6 +34,11 @@
           <el-menu-item class="el-menu-item-width" index="/member-info">
             <i class="el-icon-edit"></i>
             <span>个人中心</span>
+          </el-menu-item>
+          <!-- 构建邮件定制按钮 -->
+          <el-menu-item class="el-menu-item-width" index="/email-setting">
+            <i class="el-icon-message"></i>
+            <span>邮件定制</span>
           </el-menu-item>
           <!-- 构建切换成员按钮 -->
           <el-menu-item class="el-menu-item-width" index="/home">
@@ -55,10 +62,18 @@
     data(){
       return {
         menusList: [],
-        memberBaseInfo: {}
+        memberBaseInfo: {},
+        subMenuIconOpen: false
       }
     },
     computed: {
+      subMenuIcon(){
+        if (this.subMenuIconOpen === true){
+          return "el-icon-unlock";
+        }else{
+          return "el-icon-lock";
+        }
+      }
     },
     mounted() {
       this.menus();
@@ -73,6 +88,7 @@
         if (res.code === 200) {
           res.data.forEach(item => {
             item.index = index;
+            item.open = false;
             this.menusList.push(item);
             index = index + 1;
           })
@@ -90,6 +106,13 @@
       },
       async toMemberBase(){
         this.$router.push('')
+      },
+      async changeSubMenuIcon(menu){
+        if (menu.open === true){
+          menu.open = false;
+        }else{
+          menu.open = true;
+        }
       }
     }
   }
@@ -146,5 +169,13 @@
 
   .text-color{
     color: #ffffff;
+  }
+
+  .click-unlock {
+    position: absolute;
+    left: -20px;
+    width: 113.5%;
+    height: 100%;
+    top: 0;
   }
 </style>

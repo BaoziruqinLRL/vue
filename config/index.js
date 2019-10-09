@@ -31,7 +31,10 @@ module.exports = {
     context: [ //代理路径
         '/login',
         '/user-base/members',
-        '/user-base/menus'
+        '/user-base/menus',
+        '/email-job/list',
+        '/email-job/create',
+        '/email-job/rule/create'
     ],
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

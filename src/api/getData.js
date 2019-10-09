@@ -19,3 +19,18 @@ export const getMenus = data => fetch('/user-base/menus', data, 'GET', '');
  * 获取成员基础信息
  */
 export const getMemberBaseInfo = data => fetch('/member/base-info', data, 'GET', '');
+
+/**
+ * 获取任务列表
+ */
+export const getEmailJobList = data => fetch('/email-job/list', data, 'POST', 'fetch');
+
+/**
+ * 创建任务
+ */
+export const saveJob = data => fetch('/email-job/create', data, 'POST', 'fetch');
+
+/**
+ * 创建任务规则
+ */
+export const saveJobRule = data => fetch('/email-job/rule/create', data, 'POST', 'fetch');

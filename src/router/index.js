@@ -10,7 +10,10 @@ const home = r => require.ensure([], () => r(require('@/components/pages/home'))
 const memberNavigation = r => require.ensure([], () => r(require('@/components/pages/memberNavigation')), 'memberNavigation')
 // 导航主页首页展示
 const memberBase = r => require.ensure([], () => r(require('@/components/pages/memberBaseShow')),'memberBase');
-
+// 个人中心
+const memberInfo = r => require.ensure([], () => r(require('@/components/pages/memberInfo')),'memberInfo');
+// 邮件定制
+const emailSetting = r => require.ensure([], () => r(require('@/components/pages/emailSetting')),'emailSetting');
 const Routers = new Router({
   routes: [
     {
@@ -116,11 +119,21 @@ const Routers = new Router({
         {
           path: '/member-info',
           name: 'memberInfo',
-          component: memberBase,
+          component: memberInfo,
           meta: {
             requireAuth: true,
             requireMember: true,
             pageName: "个人中心"
+          }
+        },
+        {
+          path: '/email-setting',
+          name: 'emailSetting',
+          component: emailSetting,
+          meta: {
+            requireAuth: true,
+            requireMember: true,
+            pageName: "邮件定制"
           }
         }
       ]

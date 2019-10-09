@@ -64,6 +64,9 @@
 		justify-content: space-between;
 		align-items: center;
 		padding-left: 20px;
+    position: fixed;
+    left: 16.6667%;
+    width: 83.333%;
 	}
 	.avator{
 		.wh(36px, 36px);
