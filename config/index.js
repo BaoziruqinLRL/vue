@@ -34,7 +34,9 @@ module.exports = {
         '/user-base/menus',
         '/email-job/list',
         '/email-job/create',
-        '/email-job/rule/create'
+        '/email-job/delete',
+        '/email-job/rule/create',
+        '/email-job/rule/delete'
     ],
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

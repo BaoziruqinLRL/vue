@@ -31,6 +31,16 @@ export const getEmailJobList = data => fetch('/email-job/list', data, 'POST', 'f
 export const saveJob = data => fetch('/email-job/create', data, 'POST', 'fetch');
 
 /**
+ * 删除任务
+ */
+export const deleteJob = data => fetch('/email-job/delete', data, 'GET', '');
+
+/**
  * 创建任务规则
  */
 export const saveJobRule = data => fetch('/email-job/rule/create', data, 'POST', 'fetch');
+
+/**
+ * 删除任务规则
+ */
+export const deleteJobRule = data => fetch('/email-job/rule/delete', data, 'POST', 'fetch');

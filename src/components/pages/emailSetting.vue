@@ -77,10 +77,14 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" class="table_column_son">
+                  <template slot="header" slot-scope="scope">
+                    <span>操作&nbsp;&nbsp;</span>
+                    <el-button class="el-icon-plus" size="mini" type="success" @click="addJobRule(props.row)" circle></el-button>
+                  </template>
                   <template slot-scope="scope">
                     <el-button v-if="scope.row.edit" size="mini" @click="saveJobRule(scope.row)" class="el-icon-check"></el-button>
                     <el-button v-else size="mini" @click="setEdit(scope.row)" class="el-icon-edit"></el-button>
-                    <el-button size="mini" type="danger" @click="saveEdit(scope.row)" class="el-icon-delete" circle></el-button>
+                    <el-button size="mini" type="danger" @click="deleteJobRule(props.row, scope.row)" class="el-icon-delete" circle></el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -121,7 +125,7 @@
           <template slot-scope="scope">
             <el-button v-if="scope.row.edit" size="mini" @click="saveJob(scope.row)" class="el-icon-check"></el-button>
             <el-button v-else size="mini" @click="setEdit(scope.row)" class="el-icon-edit"></el-button>
-            <el-button size="mini" type="danger" @click="" class="el-icon-delete"></el-button>
+            <el-button size="mini" type="danger" @click="deleteJob(scope.row)" class="el-icon-delete"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -133,7 +137,9 @@
   import headTop from './headTop';
   import {getEmailJobList} from "../../api/getData";
   import {saveJob} from "../../api/getData";
+  import {deleteJob} from "../../api/getData";
   import {saveJobRule} from "../../api/getData";
+  import {deleteJobRule} from "../../api/getData";
 
   export default {
     data(){
@@ -273,7 +279,7 @@
           const res = await saveJob(email);
           if (res.code === 200) {
             this.$message({
-              message: "创建任务成功"
+              message: "操作成功"
             });
             this.getEmailJobList();
             this.cleanExpands();
@@ -282,22 +288,35 @@
               message: res.data
             })
           }
-
         }
       },
       async saveJobRule(rule){
         // 发起创建请求
-        const res = await saveJob(rule);
-        if (res.code === 200) {
+        if (rule.startDate === null){
           this.$message({
-            message: "创建规则成功"
+            message: "规则开始日期不能为空"
           });
-          rule.id = res.data.id;
-          rule.edit = false;
-        }else{
+        } else if (rule.startTime === null){
           this.$message({
-            message: res.data
-          })
+            message: "规则开始时间不能为空"
+          });
+        } else if (rule.interval === null){
+          this.$message({
+            message: "规则间隔不能为空"
+          });
+        }else {
+          const res = await saveJobRule(rule);
+          if (res.code === 200) {
+            this.$message({
+              message: "操作成功"
+            });
+            rule.id = res.data.id;
+            rule.edit = false;
+          } else {
+            this.$message({
+              message: res.data
+            })
+          }
         }
       },
       async addJob() {
@@ -332,10 +351,68 @@
           this.cleanExpands();
           this.expands.push(this.tableData[0].id);
         }
-        // this.tableData.push(con);
+      },
+      async addJobRule(job){
+        job.rules.push({
+          emailId: job.id,
+          ruleSort: null,
+          startDate: null,
+          endDate: null,
+          startTime: null,
+          endTime: null,
+          interval: null,
+          edit: true
+        })
       },
       async cleanExpands(){
         this.expands = [];
+      },
+      async deleteJob(job){
+        this.$confirm('此操作将永久删除该任务, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          const res = await deleteJob({emailId: job.id});
+          if (res.code === 200) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.getEmailJobList();
+          }else{
+            this.$message({
+              message: res.message
+            })
+          }
+        });
+      },
+      async deleteJobRule(job,rule){
+        if (job.rules.length === 1) {
+          this.$message({
+            message: "任务至少保留一条规则"
+          })
+        }else{
+          // 删除规则
+          const res = await deleteJobRule(rule);
+          if (res.code === 200) {
+            this.$message({
+              message: "操作成功"
+            });
+            let rules = [];
+            job.rules.forEach(r => {
+              if (r.id !== rule.id){
+                rules.push(r);
+              }
+            });
+            job.rules = [];
+            job.rules = rules;
+          }else{
+            this.$message({
+              message: res.data
+            })
+          }
+        }
       }
     }
   }
