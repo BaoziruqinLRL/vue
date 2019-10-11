@@ -83,8 +83,9 @@
                   </template>
                   <template slot-scope="scope">
                     <el-button v-if="scope.row.edit" size="mini" @click="saveJobRule(scope.row)" class="el-icon-check"></el-button>
-                    <el-button v-else size="mini" @click="setEdit(scope.row)" class="el-icon-edit"></el-button>
-                    <el-button size="mini" type="danger" @click="deleteJobRule(props.row, scope.row)" class="el-icon-delete" circle></el-button>
+                    <el-button v-else size="mini" @click="setRuleEdit(scope.row)" class="el-icon-edit"></el-button>
+                    <el-button v-if="scope.row.edit" size="mini" type="danger" @click="cancelEditRule(props.row, scope.row)" class="el-icon-circle-close" circle></el-button>
+                    <el-button v-else size="mini" type="danger" @click="deleteJobRule(props.row, scope.row)" class="el-icon-delete" circle></el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -125,7 +126,8 @@
           <template slot-scope="scope">
             <el-button v-if="scope.row.edit" size="mini" @click="saveJob(scope.row)" class="el-icon-check"></el-button>
             <el-button v-else size="mini" @click="setEdit(scope.row)" class="el-icon-edit"></el-button>
-            <el-button size="mini" type="danger" @click="deleteJob(scope.row)" class="el-icon-delete"></el-button>
+            <el-button v-if="scope.row.edit" size="mini" type="danger" @click="cancelEditJob(scope.row)" class="el-icon-circle-close"></el-button>
+            <el-button v-else size="mini" type="danger" @click="deleteJob(scope.row)" class="el-icon-delete"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -217,6 +219,9 @@
         data.edit = true;
         this.expands.push(data.id);
       },
+      async setRuleEdit(data){
+        data.edit = true;
+      },
       async saveJob(email){
         let pass = false;
         // 发起创建请求
@@ -257,9 +262,9 @@
                 message: "规则开始时间不能为空"
               });
               rulePass = false;
-            } else if (rule.interval === null){
+            } else if (rule.interval === null || rule.interval < 5){
               this.$message({
-                message: "规则间隔不能为空"
+                message: "规则间隔不能为空 或 小于5分钟"
               });
               rulePass = false;
             }
@@ -300,9 +305,9 @@
           this.$message({
             message: "规则开始时间不能为空"
           });
-        } else if (rule.interval === null){
+        } else if (rule.interval === null || rule.interval < 5){
           this.$message({
-            message: "规则间隔不能为空"
+            message: "规则间隔不能为空 或 小于5分钟"
           });
         }else {
           const res = await saveJobRule(rule);
@@ -337,6 +342,7 @@
               edit: true,
               rules: [
                 {
+                  id: null,
                   ruleSort: null,
                   startDate: null,
                   endDate: null,
@@ -354,6 +360,7 @@
       },
       async addJobRule(job){
         job.rules.push({
+          id: null,
           emailId: job.id,
           ruleSort: null,
           startDate: null,
@@ -411,6 +418,26 @@
             this.$message({
               message: res.data
             })
+          }
+        }
+      },
+      async cancelEditJob(job){
+        if (job.id === null) {
+          this.tableData.splice(this.tableData.indexOf(job), 1);
+        }else{
+          job.edit = false;
+        }
+      },
+      async cancelEditRule(job,rule){
+        if (job.rules.length === 1){
+          this.$message({
+            message: "至少创建一条规则"
+          })
+        }else {
+          if (rule.id === null) {
+            job.rules.splice(job.rules.indexOf(rule), 1);
+          } else{
+            rule.edit = false;
           }
         }
       }
