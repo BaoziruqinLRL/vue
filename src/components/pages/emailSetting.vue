@@ -25,6 +25,9 @@
     <div class="job_table">
       <el-table :data="tableData" style="width: 100%" :row-key="getRowKeys" :expand-row-keys="expands">
         <el-table-column type="expand">
+          <template slot="header" slot-scope="scope">
+            <el-button class="el-icon-plus" size="mini" type="success" @click="cleanExpands()" circle></el-button>
+          </template>
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
               <el-form-item label="主题">
@@ -290,7 +293,7 @@
             this.cleanExpands();
           }else{
             this.$message({
-              message: res.data
+              message: res.message
             })
           }
         }
@@ -319,7 +322,7 @@
             rule.edit = false;
           } else {
             this.$message({
-              message: res.data
+              message: res.message
             })
           }
         }
