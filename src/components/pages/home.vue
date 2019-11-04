@@ -1,8 +1,29 @@
 <template>
-  <div class="div_middle">
-    <div v-for="(item) in data">
-      <div class="home_circle">
-        <span @click="toMemberHome(item.id)">{{item.name}}</span>
+  <div class="main_div">
+    <vue-particles
+      color="#dedede"
+      :particleOpacity="0.7"
+      :particlesNumber="300"
+      shapeType="circle"
+      :particleSize="4"
+      linesColor="#dedede"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="150"
+      :moveSpeed="2"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="true"
+      clickMode="push"
+      class="lizi"
+    >
+    </vue-particles>
+    <div class="div_middle">
+      <div v-for="(item) in data">
+        <div class="home_circle">
+          <span @click="toMemberHome(item.id)">{{item.name}}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -62,16 +83,25 @@
     width: 200px;
     height: 200px;
     float: left;
-    background: url("../../assets/home/circle.jpeg") no-repeat center;
+    /*background: url("../../assets/home/circle.jpeg") no-repeat center;*/
   }
   .div_middle {
     position: absolute;
-    top: 5%;
-    left: 5%;
-    bottom: 5%;
-    right: 5%;
+    top: 30%;
+    left: 20%;
+    bottom: 30%;
+    right: 20%;
     width: 90%;
     height: 90%;
     border: none;
+    display: block;
+    margin: 0 auto;
+  }
+  .lizi{
+    height: 100%;
+  }
+  .main_div{
+    height: 100%;
+    /*background: url("../../assets/home/black.jpeg") no-repeat center;*/
   }
 </style>

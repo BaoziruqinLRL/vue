@@ -14,6 +14,9 @@ const memberBase = r => require.ensure([], () => r(require('@/components/pages/m
 const memberInfo = r => require.ensure([], () => r(require('@/components/pages/memberInfo')),'memberInfo');
 // 邮件定制
 const emailSetting = r => require.ensure([], () => r(require('@/components/pages/emailSetting')),'emailSetting');
+// 食谱页
+const foodMenu = r => require.ensure([], () => r(require('@/components/pages/foodMenu')),'foodMenu');
+
 const Routers = new Router({
   routes: [
     {
@@ -57,13 +60,13 @@ const Routers = new Router({
           }
         },
         {
-          path: '/zero',
-          name: 'zero',
-          component: memberBase,
+          path: '/food-menu',
+          name: 'foodMenu',
+          component: foodMenu,
           meta: {
             requireAuth: true,
             requireMember: true,
-            pageName: "0页"
+            pageName: "食谱页"
           }
         },
         {
