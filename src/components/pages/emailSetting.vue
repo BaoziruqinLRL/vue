@@ -1,8 +1,8 @@
 <template>
   <div>
     <head-top></head-top>
-    <div class="job_search">
-      <div class="job_input search_input_box">
+    <div class="search">
+      <div class="search_input search_input_box">
         <span class="search_input_font">任务名</span>
         <el-input v-model="searchJobName" style="width: 25%" placeholder="输入任务名"></el-input>
         <span class="search_input_font">&nbsp;&nbsp;&nbsp;发件人</span>
@@ -16,7 +16,7 @@
           </el-option>
         </el-select>
       </div>
-      <div class="job_button">
+      <div class="search_button">
         <el-button type="primary" icon="el-icon-search" circle @click="getEmailJobList"></el-button>
         <el-button type="info" icon="el-icon-refresh-right" circle @click="resetSearch"></el-button>
         <el-button type="success" icon="el-icon-plus" circle @click="addJob"></el-button>
@@ -449,23 +449,7 @@
 </script>
 
 <style>
-  .job_search{
-    position: absolute;
-    top: 15%;
-    left: 20%;
-    right: 5%;
-    height: 10%;
-  }
-  .job_input{
-    position: absolute;
-    top: 10%;
-    /*left: 3%;*/
-  }
-  .job_button{
-    position: absolute;
-    top: 10%;
-    right: 5%;
-  }
+  @import '../../style/greenYellowSearchStype.css';
   .job_table{
     position: absolute;
     top: 25%;
@@ -493,25 +477,5 @@
     margin-right: 0;
     margin-bottom: 0;
     width: 100%;
-  }
-  .search_input_font{
-    text-transform: uppercase;
-    color: black;
-    font-family: 'Economica', sans-serif;
-    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
-    font-size: 14px;
-    margin: 0;
-    -webkit-transition: font-size 0.3s;
-    transition: font-size 0.3s;
-    vertical-align: middle;
-  }
-  .search_input_box{
-  }
-  .search_input_box input{
-    border: 2px solid #7BA7AB;
-    border-radius: 5px;
-    background: #F9F0DA;
-    color: #9E9C9C;
-    height: 35px;
   }
 </style>

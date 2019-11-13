@@ -16,6 +16,14 @@ const memberInfo = r => require.ensure([], () => r(require('@/components/pages/m
 const emailSetting = r => require.ensure([], () => r(require('@/components/pages/emailSetting')),'emailSetting');
 // 食谱页
 const foodMenu = r => require.ensure([], () => r(require('@/components/pages/foodMenu')),'foodMenu');
+// 视频列表页
+const videoList = r => require.ensure([], () => r(require('@/components/pages/videoList')),'videoList');
+// 3D测试页
+const threeTest = r => require.ensure([], () => r(require('@/components/pages/threePractise')), 'threeTest');
+// 3D测试页
+const threeMap = r => require.ensure([], () => r(require('@/components/pages/threeMap')), 'threeMap');
+// jkshow
+const jkShow = r => require.ensure([],() => r(require('@/components/pages/jkShow')), 'jkShow');
 
 const Routers = new Router({
   routes: [
@@ -57,6 +65,16 @@ const Routers = new Router({
             requireAuth: true,
             requireMember: true,
             pageName: "首页"
+          }
+        },
+        {
+          path: '/video-list',
+          name: 'videoList',
+          component: videoList,
+          meta: {
+            requireAuth: true,
+            requireMember: true,
+            pageName: "视频列表页"
           }
         },
         {
@@ -102,7 +120,7 @@ const Routers = new Router({
         {
           path: '/two-one',
           name: 'twoOne',
-          component: memberBase,
+          component: jkShow,
           meta: {
             requireAuth: true,
             requireMember: true,
@@ -112,7 +130,7 @@ const Routers = new Router({
         {
           path: '/two-two',
           name: 'twoTwo',
-          component: memberBase,
+          component: threeTest,
           meta: {
             requireAuth: true,
             requireMember: true,
@@ -122,7 +140,7 @@ const Routers = new Router({
         {
           path: '/member-info',
           name: 'memberInfo',
-          component: memberInfo,
+          component: threeMap,
           meta: {
             requireAuth: true,
             requireMember: true,
