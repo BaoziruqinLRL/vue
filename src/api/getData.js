@@ -44,3 +44,14 @@ export const saveJobRule = data => fetch('/email-job/rule/create', data, 'POST',
  * 删除任务规则
  */
 export const deleteJobRule = data => fetch('/email-job/rule/delete', data, 'POST', 'fetch');
+
+/**
+ * 获取jk列表
+ */
+export const getJkList = data => fetch('/jk/list', data, 'POST', 'fetch');
+
+/**
+ * 创建jk
+ */
+export const saveJk = data => fetch('/jk/save', data, 'POST', 'fetch');
+

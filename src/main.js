@@ -8,6 +8,7 @@ import VueParticles from 'vue-particles'
 import MintUI  from  'mint-ui';
 import 'mint-ui/lib/style.css';
 import { IndexList, IndexSection } from 'mint-ui';
+import globalConfig from './components/util/GlobalConfig';
 
 Vue.component(IndexList.name, IndexList);
 Vue.component(IndexSection.name, IndexSection);
@@ -17,6 +18,7 @@ Vue.use(VueParticles)
 Vue.use(ElementUI);
 // 注册mini-ui
 Vue.use(MintUI);
+Vue.prototype.global = globalConfig;
 
 /* eslint-disable no-new */
 new Vue({
