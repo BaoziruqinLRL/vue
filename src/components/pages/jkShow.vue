@@ -20,103 +20,42 @@
         <el-button type="primary" icon="el-icon-search" circle @click=""></el-button>
         <el-button type="info" icon="el-icon-refresh-right" circle @click=""></el-button>
         <el-button type="success" icon="el-icon-plus" circle @click="addJk"></el-button>
-        <el-dialog
-          title="jk-create"
-          :visible.sync="createJk"
-          width="50%"
-          :before-close="createClose">
-          <el-form :model="showJk" style="padding: 0 20%">
-            <el-form-item>
-              &#12288;&#12288;名称&ensp;
-              <el-input class="jk_input" v-model="showJk.name"></el-input>
-            </el-form-item>
-            <el-form-item>
-              &#12288;&#12288;风格&ensp;
-              <el-input class="jk_input" v-model="showJk.style"></el-input>
-            </el-form-item>
-            <el-form-item>
-              &#12288;&#12288;颜色&ensp;
-              <el-select class="jk_input"
-                         v-model="showJk.color"
-                         multiple
-                         filterable
-                         allow-create
-                         default-first-option>
-                <el-option v-for="color in colorList"
-                           :key="color"
-                           :label="color"
-                           :value="color">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              &#12288;&#12288;价格&ensp;
-              <el-input class="jk_input" v-model="showJk.price"></el-input>
-            </el-form-item>
-            <el-form-item>
-              &#12288;&#12288;类型&ensp;
-              <el-select class="jk_input" v-model="showJk.type">
-                <el-option label="裙子" value="1"></el-option>
-                <el-option label="上衣" value="2"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="开售时间">
-              <el-date-picker class="jk_input"
-                              v-model="showJk.saleTime"
-                              type="datetime">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="购买时间">
-              <el-date-picker class="jk_input"
-                              v-model="showJk.buyTime"
-                              type="datetime">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="预览小图">
-              <el-upload
-                :action="uploadPath"
-                :on-success="previewSuccess"
-                :file-list="currentPreviewList"
-                :auto-upload="true"
-                :multiple="false"
-                :show-file-list="true"
-                :limit="1">
-                <el-button size="small" type="primary">点击上传</el-button>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="预览大图">
-              <el-input class="jk_input" v-model="showJk.fullImg"></el-input>
-            </el-form-item>
-          </el-form>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="cancelAdd">取消</el-button>
-            <el-button @click="saveJk">保存</el-button>
-          </span>
-        </el-dialog>
+        <jk-edit-dialog
+          :showJk="showJk"
+          :dialogVisible="createJk"
+          :colorList="colorList"
+          @dialogClose="createDialogClose">
+        </jk-edit-dialog>
       </div>
     </div>
     <div class="jk_list">
       <el-divider></el-divider>
       <div class="block" v-for="jk in jkList" :key="jk.id">
-        <div>
         <div class="block_span">
-          <span>{{ jk.name }}</span>
+          <span style="width: 100%; text-align: center">{{ jk.name }}</span>
+          <div style="float: right;">
+            <el-button circle @click="editJkInfo(jk)" class="el-icon-edit"></el-button>
+            <jk-edit-dialog
+              :showJk="showJk"
+              :dialogVisible="editJk"
+              :colorList="colorList"
+              @dialogClose="editDialogClose">
+            </jk-edit-dialog>
+          </div>
         </div>
-        <div>
-          <el-button class="block_img" @click="showJkDialog(jk)">
+        <div class="block_img">
+          <el-button style="width: 100%; height: 100%;" @click="showJkDialog(jk)">
             <el-image
-              :src="getImgUrl(jk.previewImg)"
-              :fit="fill"></el-image>
+              style="width: 100%; height: 100%;"
+              :src="getImgUrl(jk.previewImg)">
+            </el-image>
           </el-button>
         </div>
-        <el-dialog
-          title="jk"
-          :visible.sync="dialogVisible"
-          width="30%"
-          :before-close="handleClose">
-          <jk-dialog :jk="showJk"></jk-dialog>
-        </el-dialog>
-        </div>
+        <jk-dialog
+          :jk="showJk"
+          :dialogVisible="dialogVisible"
+          @dialogClose="showDialogClose">
+        </jk-dialog>
         <el-divider></el-divider>
       </div>
     </div>
@@ -126,6 +65,7 @@
 <script>
   import headTop from './headTop';
   import jkDialog from '../util/jkDialog';
+  import jkEditDialog from '../util/jkEditDialog';
   import {getJkList,saveJk} from '../../api/getData';
 
   export default {
@@ -155,8 +95,6 @@
         dialogVisible: false,
         createJk: false,
         editJk: false,
-        currentPreviewList: [],
-        currentFullList: [],
         showJk: {
           id: '',
           name: '',
@@ -172,17 +110,24 @@
           buyTime: '',
           addTime: ''
         },
-        uploadPath: this.global.imageUploadPath
+        totalWidth: window.innerWidth
       }
     },
     components: {
       headTop,
-      jkDialog
+      jkDialog,
+      jkEditDialog
+    },
+    created(){
+      this.getJkInfoList();
+      window.addEventListener('resize', this.setTotalWidth);
     },
     mounted() {
-      this.getJkInfoList();
     },
     methods:{
+      setTotalWidth(){
+        this.totalWidth = window.innerWidth;
+      },
       showJkDialog(jk){
         this.showJk = jk;
         this.dialogVisible = true;
@@ -204,14 +149,20 @@
         this.createJk = true;
         this.clearShowJk();
       },
+      editJkInfo(jk){
+        this.editJk = true;
+        this.showJk = jk;
+      },
       async saveJk(){
         this.$message({
           message: this.showJk
         })
-        this.showJk.color = this.showJk.color.toString();
         const res = await saveJk(this.showJk);
         if (res.code === 200){
-          this.createJk = false;
+          this.$message({
+            message: res.message
+          });
+          this.initShowTag();
           this.clearShowJk();
           this.getJkInfoList();
         }else{
@@ -223,18 +174,6 @@
       cancelAdd(){
         this.createJk = false;
         this.clearShowJk();
-      },
-      previewSuccess(response, file, fileList){
-        if (response.code === 200) {
-          this.$message({
-            message: '上传成功'
-          })
-        }else{
-          this.$message({
-            message: response.message
-          })
-        }
-        this.showJk.previewImg = this.global.jkUploadPath + file.name;
       },
       clearShowJk(){
         this.showJk = {
@@ -252,6 +191,51 @@
           buyTime: null,
           addTime: null
         };
+      },
+      controlBlock(){
+        let divList = document.getElementsByClassName("block");
+        for (let i = 0; i < divList.length; i++){
+          let div = divList[i];
+          let width = window.getComputedStyle(div).getPropertyValue("width");
+          div.setAttribute("style","height: 0;");
+          div.style.height = width;
+        }
+      },
+      showDialogClose(payload){
+        this.dialogVisible = payload.dialogVisible;
+      },
+      createDialogClose(payload){
+        if (payload.confirm){
+          this.showJk = payload.jk;
+          this.saveJk();
+          this.initShowTag();
+        }else{
+          this.createJk = payload.dialogVisible;
+        }
+      },
+      editDialogClose(payload){
+        if (payload.confirm){
+          this.showJk = payload.jk;
+          this.saveJk();
+          this.initShowTag();
+        }else{
+          this.editJk = payload.dialogVisible;
+        }
+      },
+      initShowTag(){
+        this.dialogVisible = false;
+        this.createJk = false;
+        this.editJk = false;
+      }
+    },
+    watch:{
+      jkList:function(){
+        this.$nextTick(function(){
+          this.controlBlock();
+        });
+      },
+      totalWidth:function(){
+        this.controlBlock();
       }
     }
   }
@@ -270,19 +254,29 @@
   }
   .block{
     text-align: center;
-    width: 33.33%;
-    height: 33.33%;
+    width: 25%;
     float: left;
   }
   .block_span{
-    vertical-align: center;
-    width: 100%;
+    width: 70%;
     height: 15%;
+    line-height: 220%;
     float: top;
+    padding: 0 15%;
+    text-indent: 1em;
+  }
+  .block_span >>> .is-circle{
+    border: 0;
+    padding: 12px 0;
+    float: left;
   }
   .block_img{
     width: 70%;
     height: 70%;
+    padding: 0 15%;
+  }
+  .block_img >>> .el-button{
+    padding: 20px 20px;
   }
   .jk_input{
     width: 70%;

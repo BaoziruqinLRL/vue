@@ -1,6 +1,12 @@
 <template>
   <div>
-    <span>{{jk.name}}</span>
+    <el-dialog
+      title="jk"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>{{jk.name}}</span>
+    </el-dialog>
   </div>
 </template>
 
@@ -26,10 +32,21 @@
             addTime: '2019-11-13 15:00:00'
           }
         }
+      },
+      dialogVisible: {
+        type: Boolean,
+        default: function () {
+          return false
+        }
       }
     },
     data(){
       return {}
+    },
+    methods: {
+      handleClose(){
+        this.$emit('dialogClose', {dialogVisible: false, confirm: false});
+      }
     }
   }
 </script>
