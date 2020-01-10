@@ -17,8 +17,8 @@
         </el-select>
       </div>
       <div class="search_button">
-        <el-button type="primary" icon="el-icon-search" circle @click=""></el-button>
-        <el-button type="info" icon="el-icon-refresh-right" circle @click=""></el-button>
+        <el-button type="primary" icon="el-icon-search" circle @click="getJkInfoList"></el-button>
+        <el-button type="info" icon="el-icon-refresh-right" circle @click="resetSearch"></el-button>
         <el-button type="success" icon="el-icon-plus" circle @click="addJk"></el-button>
         <jk-edit-dialog
           :showJk="showJk"
@@ -89,9 +89,9 @@
           }
         ],
         colorList:['红色','绿色','蓝色'],
-        searchName: '',
-        searchStyle: '',
-        searchColor: '',
+        searchName: null,
+        searchStyle: null,
+        searchColor: null,
         dialogVisible: false,
         createJk: false,
         editJk: false,
@@ -226,6 +226,11 @@
         this.dialogVisible = false;
         this.createJk = false;
         this.editJk = false;
+      },
+      resetSearch(){
+        this.searchStyle = null;
+        this.searchColor = null;
+        this.searchName = null;
       }
     },
     watch:{
